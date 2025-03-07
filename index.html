@@ -13,29 +13,30 @@
 <body>
 
     <a-scene mindar-image="imageTargetSrc: target.mind; uiScanning: false;" embedded arjs>
+        <a-assets>
+            <video id="myVideo" src="video.mp4" preload="auto" playsinline webkit-playsinline></video>
+        </a-assets>
+
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
         <a-entity mindar-image-target="targetIndex: 0">
-            <a-video id="videoEntity" 
+            <a-video id="videoEntity"
                      src="#myVideo"
                      position="0 0 0"
                      scale="0.9 2.0 1"
                      width="0.9" 
-                     height="1.5"
+                     height="2.0"
                      autoplay
-                     loop>
+                     loop
+                     muted>
             </a-video>
         </a-entity>
     </a-scene>
 
-    <video id="myVideo" src="video.mp4" loop playsinline></video>
-
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            let videoEntity = document.querySelector("#videoEntity");
-            videoEntity.setAttribute("scale", "0.9 2.0 1");
-            videoEntity.setAttribute("width", "0.9");
-            videoEntity.setAttribute("height", "1.5");
+            let video = document.getElementById("myVideo");
+            video.play();
         });
     </script>
 
