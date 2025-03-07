@@ -8,13 +8,29 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar-js@1.2.0/dist/mindar-image-aframe.prod.js"></script>
     <style>
         body { margin: 0; overflow: hidden; }
+        #playButton {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 100;
+            padding: 10px 20px;
+            background: #ff6600;
+            color: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
+    <button id="playButton">Play Video</button>
+
     <a-scene mindar-image="imageTargetSrc: target.mind; uiScanning: false;" embedded arjs>
         <a-assets>
-            <video id="myVideo" src="video.mp4" preload="auto" playsinline webkit-playsinline></video>
+            <video id="myVideo" preload="auto" playsinline webkit-playsinline muted loop>
+                <source src="video.mp4" type="video/mp4">
+            </video>
         </a-assets>
 
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -36,7 +52,18 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             let video = document.getElementById("myVideo");
-            video.play();
+            let playButton = document.getElementById("playButton");
+
+            // Ensure the video loads
+            video.load();
+
+            playButton.addEventListener("click", () => {
+                video.play().then(() => {
+                    console.log("Video started successfully!");
+                }).catch(error => {
+                    console.error("Video playback failed:", error);
+                });
+            });
         });
     </script>
 
