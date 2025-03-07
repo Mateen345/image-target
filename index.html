@@ -5,48 +5,46 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
   <body>
-    <a-scene mindar-image="imageTargetSrc: assets/target.mind;" 
+    <a-scene mindar-image="imageTargetSrc: target.mind;" 
              vr-mode-ui="enabled: false" 
              device-orientation-permission-ui="enabled: false">
       
-      <!-- Video Asset -->
+      <!-- Assets for video -->
       <a-assets>
-        <video id="myVideo" src="assets/video.mp4" preload="auto" playsinline webkit-playsinline loop></video>
+        <video id="myVideo" src="video.mp4" preload="auto" playsinline webkit-playsinline loop></video>
       </a-assets>
-    
+
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Video Display (Adjusted Size) -->
+      <!-- Image & Video Display -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-video id="videoEntity" src="#myVideo" position="0 0 0" width="0.9" height="1.5" rotation="0 0 0"></a-video>
+        <!-- Display Image -->
+        <a-image id="myImage" src="image.jpg" position="-0.6 0 0" width="0.5" height="0.5"></a-image>
+        
+        <!-- Display Video -->
+        <a-video id="videoEntity" src="#myVideo" position="0.6 0 0" width="0.5" height="0.5"></a-video>
       </a-entity>
 
     </a-scene>
 
     <script>
       const video = document.querySelector("#myVideo");
-      const videoEntity = document.querySelector("#videoEntity");
 
-      // Start video with sound when the image target is found
-      document.querySelector("a-scene").addEventListener("arReady", () => {
-        console.log("AR is ready");
-      });
-
-      // Play video and sound when the target is found
+      // Start video when the image target is found
       document.querySelector("[mindar-image-target]").addEventListener("targetFound", () => {
-        console.log("Image target found, playing video and sound");
+        console.log("Image target found, playing video.");
         
-        // Ensure user interaction has occurred before playing video
+        // Ensure video plays with user interaction
         video.play().then(() => {
-          console.log("Video started playing with sound.");
+          console.log("Video started playing.");
         }).catch((e) => {
           console.log("Error playing video:", e);
         });
       });
 
-      // Pause video and sound when the target is lost
+      // Pause video when the target is lost
       document.querySelector("[mindar-image-target]").addEventListener("targetLost", () => {
-        console.log("Image target lost, pausing video and sound");
+        console.log("Image target lost, pausing video.");
         video.pause();
       });
     </script>
