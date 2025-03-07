@@ -19,8 +19,15 @@
       <!-- Image Target -->
       <a-entity mindar-image-target="targetIndex: 0">
         
-        <!-- Display Video (Single Instance) -->
-        <a-video id="videoEntity" src="#myVideo" position="0 0 0" width="1.5" height="1" rotation="0 0 0"></a-video>
+        <!-- Single Video Element (Bigger Size & Proper Positioning) -->
+        <a-video id="videoEntity" 
+                 src="#myVideo" 
+                 position="0 0 0" 
+                 width="2.5" 
+                 height="1.5" 
+                 rotation="0 0 0"
+                 visible="false">
+        </a-video>
 
       </a-entity>
 
@@ -29,26 +36,33 @@
     <script>
       const video = document.querySelector("#myVideo");
       const videoEntity = document.querySelector("#videoEntity");
+      const target = document.querySelector("[mindar-image-target]");
+
+      // Make sure only one video appears
+      let isVideoPlaying = false;
 
       // Start video when the image target is found
-      document.querySelector("[mindar-image-target]").addEventListener("targetFound", () => {
+      target.addEventListener("targetFound", () => {
         console.log("Image target found, playing video.");
-        
-        // Ensure video plays with user interaction
-        video.play().then(() => {
-          console.log("Video started playing.");
-        }).catch((e) => {
-          console.log("Error playing video:", e);
-        });
 
-        // Make sure the video is visible and correctly sized
-        videoEntity.setAttribute("visible", "true");
+        if (!isVideoPlaying) {
+          video.play().then(() => {
+            console.log("Video started playing.");
+          }).catch((e) => {
+            console.log("Error playing video:", e);
+          });
+
+          videoEntity.setAttribute("visible", "true");
+          isVideoPlaying = true;
+        }
       });
 
       // Pause video when the target is lost
-      document.querySelector("[mindar-image-target]").addEventListener("targetLost", () => {
+      target.addEventListener("targetLost", () => {
         console.log("Image target lost, pausing video.");
         video.pause();
+        videoEntity.setAttribute("visible", "false");
+        isVideoPlaying = false;
       });
     </script>
   </body>
